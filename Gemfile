@@ -1,13 +1,36 @@
 source 'https://rubygems.org'
 
+# Environment configuration for gem linking
+LINK_LOCAL_GEMS = ENV.fetch('LINK_LOCAL_GEMS', 'true') == 'true'
+LINK_REMOTE_GEMS = ENV.fetch('LINK_REMOTE_GEMS', 'false') == 'true'
+LOCAL_GEM_ROOT = ENV.fetch('LOCAL_GEM_ROOT', '../../')
+
 # Core ActiveDataFlow gem
-gem 'active_data_flow', path: '../../core_gem/core'
+if LINK_LOCAL_GEMS
+  gem 'active_data_flow', path: "#{LOCAL_GEM_ROOT}core_gem/core"
+elsif LINK_REMOTE_GEMS
+  gem 'active_data_flow', github: 'magenticmarketactualskill/active_dataflow'
+else
+  gem 'active_data_flow'
+end
 
 # ActiveRecord connector for source and sink
-gem 'active_data_flow-active_record', path: '../../connector_gems/active_record'
+if LINK_LOCAL_GEMS
+  gem 'active_data_flow-active_record', path: "#{LOCAL_GEM_ROOT}connector_gems/active_record"
+elsif LINK_REMOTE_GEMS
+  gem 'active_data_flow-active_record', github: 'magenticmarketactualskill/active_dataflow'
+else
+  gem 'active_data_flow-active_record'
+end
 
 # Rails heartbeat app runtime
-gem 'active_data_flow-rails_heartbeat_app', path: '../../runtime_gems/rails_heartbeat_app'
+if LINK_LOCAL_GEMS
+  gem 'active_data_flow-rails_heartbeat_app', path: "#{LOCAL_GEM_ROOT}runtime_gems/rails_heartbeat_app"
+elsif LINK_REMOTE_GEMS
+  gem 'active_data_flow-rails_heartbeat_app', github: 'magenticmarketactualskill/active_dataflow'
+else
+  gem 'active_data_flow-rails_heartbeat_app'
+end
 
 # Rails dependencies
 gem 'rails', '~> 7.0'
